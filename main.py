@@ -42,12 +42,32 @@ while True:
             
             # 将游戏置顶启动
             subprocess.Popen(game_exe)
-            # 枚举窗口,找到名称包含"原神"的窗口
-            time.sleep(5)
-            window = pyautogui.getWindowsWithTitle("原神")[0]
+            subprocess.Popen(['ffplay', '-nodisp', '-autoexit', 'C:\\Users\\Dao\\Projects\\有趣的项目\\GenshinImpact_Start\\mp3\\mp3\\BGM.mp3'])
+            
+            
+            max_retries = 8
+            retries = 0
 
-            # 将目标窗口置顶  
-            pyautogui.moveTo(window.left, window.top)
+            while retries < max_retries:
+                try:
+                    time.sleep(1)
+                    
+                    # 枚举窗口,找到名称包含"原神"的窗口
+                    window = pyautogui.getWindowsWithTitle("原神")[0]
+
+                    # 将目标窗口置顶
+                    # 容易失败需要执行多次
+                    for i in range(1000):
+                        pyautogui.moveTo(window.left, window.top)
+
+                    break  # 如果命令成功执行，跳出循环
+
+                except Exception as e:  # 捕获所有异常，或者你可以指定某种异常
+                    print(f"Error: {e}")
+                    retries += 1
+                    if retries >= max_retries:
+                        print("Max retries reached!")
+                        break
             print("原神 启动!")
             break            
         except:
